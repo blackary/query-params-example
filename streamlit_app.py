@@ -2,16 +2,14 @@ from time import sleep
 
 import streamlit as st
 
-params = st.experimental_get_query_params()
+if "params" not in st.session_state:
+    params = st.experimental_get_query_params()
+    st.session_state["params"] = params
 
-st.write(params)
+"Params when the page was loaded:"
+st.write(st.session_state["params"])
 
-if "redirect" in params:
-    st.write("Redirecting...")
-    st.experimental_set_query_params(redirected=True)
-    sleep(0.1)
-    st.experimental_rerun()
-elif "redirected" in params:
-    st.write("Redirected!")
-
-"[Click here to redirect](?redirect=true)"
+st.write(
+    '<a href="?foo=bar" target=_blank>Click me to add query params</a>',
+    unsafe_allow_html=True,
+)
